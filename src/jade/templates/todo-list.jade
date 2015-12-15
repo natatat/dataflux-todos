@@ -1,0 +1,10 @@
+
+//-
+//- Copyright (C) 2015 by Looker Data Services, Inc.
+//- All rights reserved.
+//-
+
+div(ng-repeat="todo in todos")
+  input(type="checkbox" ng-model="todo.done")
+  span(ng-class="{'done': todo.done}") {{todo.description}}
+  a(href="#" ng-click="removeTodoItem(todo.id)") remove

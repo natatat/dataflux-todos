@@ -18,6 +18,7 @@ require './modules/reflux'
 require './modules/client_schema'
 require './modules/sample_module'
 require './modules/todo/todo_module'
+require './modules/todo/todo_list_module'
 
 angular = require 'angular'
 
