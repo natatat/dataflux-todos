@@ -13,7 +13,7 @@ sample = angular.module 'sample', []
 sample.controller 'SampleController', class SampleController
 
     constructor: ($scope)->
-        $scope.name = 'World'
+        $scope.name = 'it\'s me'
 
 sample.directive 'sampleGreeting', ->
     return {
