@@ -4,6 +4,7 @@
 #
 
 angular = require 'angular'
+_ = require './underscore'
 
 angular.module('todo').factory 'ReadOnlyView', ->
 

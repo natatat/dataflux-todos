@@ -19,6 +19,7 @@ require './modules/client_schema'
 require './modules/sample_module'
 require './modules/todo/todo_module'
 require './modules/todo/todo_list_module'
+require './../read_only_view'
 
 angular = require 'angular'
 
