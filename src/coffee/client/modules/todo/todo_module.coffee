@@ -12,16 +12,21 @@ _         = require '../../../underscore'
 
 todo = angular.module('todo', ['reflux'])
 
-todo.factory 'TodoItemStore', (Todo, TodoItemActions, TodoListActions, reflux) ->
+todo.factory 'TodoItemStore', (Todo, TodoItemActions, TodoListActions, ReadOnlyView, reflux) ->
     reflux.createStore
 
         listenables: TodoItemActions
 
         init: ->
-            @_items = [] # [?] why "private"?
+            @_items = []
+            # should not be mutable. only changes through listening to an action
 
-        getAll: ->
-            return @_items[..]
+        # getAll: ->
+        #     console.log(@_items[..])
+        #     console.log('huh', @_items)
+            # @_items = ReadOnlyView.convertObject @_items[..]
+            # return @_items
+            # toReadOnlyView(), trying to two way bind is no bueno. should throw an error when tries to "set"
 
         onAddItem: (todoDescription) ->
             todo = {
@@ -29,20 +34,17 @@ todo.factory 'TodoItemStore', (Todo, TodoItemActions, TodoListActions, reflux) -
                 description: todoDescription
                 done: false
             }
-            @_items.unshift(todo)
+            @_items.unshift(ReadOnlyView.convertObject(todo)) # [?] happen to this object, or the @_items array?
+            # setaction(fieldname, action to fire)
 
             @trigger(EVENT.ADD, todo.id)
             @trigger(EVENT.CHANGE)
-
-            TodoListActions.loadAll() # [?] kosher to trigger these actions here?
 
         onRemoveItem: (id) ->
             @_items = _.filter @_items, (item) -> item.id isnt id
 
             @trigger(EVENT.REMOVE, todo.id)
             @trigger(EVENT.CHANGE)
-
-            TodoListActions.loadAll()
 
 
 todo.factory 'TodoItemActions', (reflux) ->
@@ -56,7 +58,7 @@ todo.directive 'todoInput', () ->
     controllerAs: 'controller'
     controller: ($scope, TodoItemStore, TodoItemActions) ->
         TodoItemStore.$listen($scope, (event, id) ->
-            # [?] is this the right place for this? link function?
+            # TODO: make this it's own store
              $scope.todo = '' if event == 'add'
         )
 
