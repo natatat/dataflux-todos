@@ -3,6 +3,4 @@
 //- All rights reserved.
 //-
 
-form
-  text-input
-  input(type="submit" ng-click="addTodoItem()")
+input(type="text" ng-model="value" ng-change="setValue(value)")

@@ -56,11 +56,8 @@ todo.directive 'todoInput', () ->
     scope: {}
     template: templates['todo-input']
     controllerAs: 'controller'
-    controller: ($scope, TodoItemStore, TodoItemActions) ->
-        TodoItemStore.$listen($scope, (event, id) ->
-            # TODO: make this it's own store
-             $scope.todo = '' if event == 'add'
-        )
+    controller: ($scope, TodoItemActions, TextInputActions) ->
+        $scope.addTodoItem = ->
+            TodoItemActions.addItem()
+            TextInputActions.clearValue()
 
-        $scope.addTodoItem = (todo) ->
-            TodoItemActions.addItem(todo)
