@@ -24,8 +24,6 @@ todo.factory 'TodoItemStore', (Todo, TodoItemActions, TextInputStore, ReadOnlyVi
             # @_items = ReadOnlyView.convertObject @_items[..]
             # return @_items
 
-        # toReadOnlyView(), trying to two way bind is no bueno. should throw an error when tries to "set"
-
         onAddItem: ->
             @_todo = new ReadOnlyView({
                 id: _.uniqueId 'todo-'
@@ -36,11 +34,11 @@ todo.factory 'TodoItemStore', (Todo, TodoItemActions, TextInputStore, ReadOnlyVi
 
             @_todo.setAction('done', (todo, field, value, commit) ->
                 # field = !value
-                commit(!value)
-                console.log(todo)
-                console.log(field)
-                console.log(value)
-                console.log(commit)
+                # commit(!value)
+                # console.log(todo)
+                # console.log(field)
+                # console.log(value)
+                # console.log(commit)
             )
 
             @trigger(EVENT.ADD, @_todo.id)

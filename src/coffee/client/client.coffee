@@ -9,6 +9,7 @@ if typeof(global) is 'undefined'
 
 # Load JSData libraries. The core library must be first.
 require 'js-data'
+require 'js-data-localstorage'
 require 'js-data-angular'
 
 # Include the Reflux module
