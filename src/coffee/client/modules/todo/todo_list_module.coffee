@@ -33,8 +33,7 @@ todo.directive 'todoList', () ->
     controllerAs: 'controller'
     controller: ($scope, TodoListStore, TodoListActions, TodoItemStore, TodoItemActions) ->
         TodoItemStore.$listen($scope, (event, id) ->
-            return if event != 'change'
-            TodoListActions.loadAll()
+            TodoListActions.loadAll() if event == 'add' || event == 'remove'
         )
 
         TodoListStore.$listen($scope, (event, id) ->
@@ -42,21 +41,7 @@ todo.directive 'todoList', () ->
         )
 
         $scope.removeTodoItem = (id) ->
-          TodoItemActions.removeItem(id)
+            TodoItemActions.removeItem(id)
 
-# TODOS:
-# - think about the flow of data (based on that architecture document
-
-# [?]s
-# the toReadOnlyView flow...
-# a) #4, b) #7
-
-# working on fleshing out my dataflux todoApp, cleaning up my stores, making the text input it's own store
-#
-# next steps - incorporating jsData with localstorage
-# blockers: grunt watch isn't working
-
-# [?] How does the TodoListStore listen to the TodoItemActions? can this be an array [TodoListActions, TodoItemActions]?
-# like, if on addTodoItem, we want to TodoListActions.loadAll() again (instead of having to call loadAll in TodoItemStore?)
-
-# [?] why @_items "private"? a: should never be accessed directly
+        $scope.makeDone = (id) ->
+            TodoItemActions.doItem(id)

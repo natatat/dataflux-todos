@@ -12,43 +12,55 @@ _         = require '../../../underscore'
 
 todo = angular.module('todo', ['reflux'])
 
-todo.factory 'TodoItemStore', (Todo, TodoItemActions, TodoListActions, ReadOnlyView, reflux) ->
+todo.factory 'TodoItemStore', (Todo, TodoItemActions, TextInputStore, ReadOnlyView, reflux) ->
     reflux.createStore
 
         listenables: TodoItemActions
 
         init: ->
             @_items = []
-            # should not be mutable. only changes through listening to an action
 
         # getAll: ->
-        #     console.log(@_items[..])
-        #     console.log('huh', @_items)
             # @_items = ReadOnlyView.convertObject @_items[..]
             # return @_items
-            # toReadOnlyView(), trying to two way bind is no bueno. should throw an error when tries to "set"
 
-        onAddItem: (todoDescription) ->
-            todo = {
+        # toReadOnlyView(), trying to two way bind is no bueno. should throw an error when tries to "set"
+
+        onAddItem: ->
+            @_todo = new ReadOnlyView({
                 id: _.uniqueId 'todo-'
-                description: todoDescription
+                description: TextInputStore._value
                 done: false
-            }
-            @_items.unshift(ReadOnlyView.convertObject(todo)) # [?] happen to this object, or the @_items array?
-            # setaction(fieldname, action to fire)
+            }, ['id', 'description', 'done'])
+            @_items.unshift(@_todo)
 
-            @trigger(EVENT.ADD, todo.id)
+            @_todo.setAction('done', (todo, field, value, commit) ->
+                # field = !value
+                commit(!value)
+                console.log(todo)
+                console.log(field)
+                console.log(value)
+                console.log(commit)
+            )
+
+            @trigger(EVENT.ADD, @_todo.id)
             @trigger(EVENT.CHANGE)
 
         onRemoveItem: (id) ->
             @_items = _.filter @_items, (item) -> item.id isnt id
 
-            @trigger(EVENT.REMOVE, todo.id)
+            @trigger(EVENT.REMOVE, @_todo.id)
+            @trigger(EVENT.CHANGE)
+
+        onDoItem: (id) ->
+            # item = _.find @_items, (item) -> item.id == id
+            # item.done = !item.done
+
             @trigger(EVENT.CHANGE)
 
 
 todo.factory 'TodoItemActions', (reflux) ->
-    reflux.createActions ['addItem', 'removeItem']
+    reflux.createActions ['addItem', 'removeItem', 'doItem']
 
 
 todo.directive 'todoInput', () ->
