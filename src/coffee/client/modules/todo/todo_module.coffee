@@ -63,10 +63,10 @@ todo.factory 'TodoItemActions', (reflux) ->
     reflux.createActions ['addItem', 'removeItem', 'doItem']
 
 
-todo.directive 'todoInput', () ->
+todo.directive 'todoForm', () ->
     restrict: 'E'
     scope: {}
-    template: templates['todo-input']
+    template: templates['todo-form']
     controllerAs: 'controller'
     controller: ($scope, TodoItemActions, TextInputActions) ->
         $scope.addTodoItem = ->
