@@ -3,21 +3,35 @@
 # All rights reserved.
 #
 
-angular = require 'angular'
-
-############################################################################################################
-
 # Allow Node.js-style `global` in addition to `window`
 if typeof(global) is 'undefined'
     window.global = window
 
+# Load JSData libraries. The core library must be first.
+require 'js-data'
+window.DSLocalStorageAdapter = require 'js-data-localstorage'
+require 'js-data-angular'
+
+# Include the Reflux module
+require './modules/reflux'
+
 # Add 'require' statements for your other Angular module files here.
-require './modules/sample_module'
+require './modules/client_schema'
+require './modules/todo/todo_item_module'
+require './modules/todo/todo_list_module'
+require './modules/todo/input_module'
+require './../read_only_view'
+
+angular = require 'angular'
 
 # Add all your modules here.
 MODULES = [
-    'sample'
+    'reflux'
+    'schema'
+    'todo'
 ]
+
+############################################################################################################
 
 angular.module 'app', MODULES
     .config ($locationProvider)->
