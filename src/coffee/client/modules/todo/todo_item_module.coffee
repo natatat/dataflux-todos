@@ -20,7 +20,7 @@ _         = require '../../../underscore'
 
 todo = angular.module('todo', ['reflux'])
 
-todo.factory 'TodoItemStore', (Todo, TodoItemActions, TextInputStore, ReadOnlyView, reflux) ->
+todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoItemActions) ->
     reflux.createStore
 
         listenables: TodoItemActions
@@ -54,7 +54,7 @@ todo.factory 'TodoItemStore', (Todo, TodoItemActions, TextInputStore, ReadOnlyVi
 
 
 todo.factory 'TodoItemActions', (reflux) ->
-    reflux.createActions ['addItem', 'removeItem', 'doItem']
+    reflux.createActions ['addItem', 'doItem', 'removeItem']
 
 
 todo.directive 'todoForm', () ->
@@ -62,7 +62,7 @@ todo.directive 'todoForm', () ->
     scope: {}
     template: templates['todo-form']
     controllerAs: 'controller'
-    controller: ($scope, TodoItemActions, TextInputActions) ->
+    controller: ($scope, TextInputActions, TodoItemActions) ->
         $scope.addTodoItem = ->
             TodoItemActions.addItem() # (1)
             TextInputActions.clearValue()

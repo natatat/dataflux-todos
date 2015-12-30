@@ -21,9 +21,9 @@ _         = require '../../../underscore'
 todo = angular.module('todo')
 
 todo.factory 'TextInputActions', (reflux) ->
-    reflux.createActions ['setValue', 'clearValue']
+    reflux.createActions ['clearValue', 'setValue']
 
-todo.factory 'TextInputStore', (TextInputActions, reflux) ->
+todo.factory 'TextInputStore', (reflux, TextInputActions) ->
     reflux.createStore
 
         listenables: TextInputActions

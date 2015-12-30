@@ -19,7 +19,7 @@ _         = require '../../../underscore'
 
 todo = angular.module('todo')
 
-todo.factory 'TodoListStore', (Todo, TodoItemStore, TodoListActions, ReadOnlyView, reflux) ->
+todo.factory 'TodoListStore', (ReadOnlyView, reflux, Todo, TodoItemStore, TodoListActions) ->
     reflux.createStore
 
         listenables: TodoListActions
@@ -38,7 +38,7 @@ todo.directive 'todoList', () ->
     scope: {}
     template: templates['todo-list']
     controllerAs: 'controller'
-    controller: ($scope, TodoListStore, TodoListActions, TodoItemStore, TodoItemActions) ->
+    controller: ($scope, TodoItemActions, TodoItemStore, TodoListActions, TodoListStore) ->
         TodoItemStore.$listen($scope, (event, id) ->
             TodoListActions.loadAll() if event == 'add' || event == 'remove' # (2)
         )
