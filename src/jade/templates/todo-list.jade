@@ -5,6 +5,4 @@
 //-
 
 div(ng-repeat="todo in todos")
-  input(type="checkbox" ng-click="makeDone(todo)")
-  span(ng-class="{'done': todo.done}") {{todo.description}}
-  a(href="#" ng-click="removeTodoItem(todo.id)") remove
+  todo-item(todo-id="todo.id")
