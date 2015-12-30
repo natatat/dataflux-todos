@@ -31,6 +31,9 @@ todo.factory 'TextInputStore', (reflux, TextInputActions) ->
         init: ->
             @_value = ""
 
+        getValue: ->
+            return @_value
+
         onSetValue: (value) ->
             @_value = value # (2)
             @trigger(EVENT.CHANGE) # (3)
@@ -46,7 +49,7 @@ todo.directive 'textInput', () ->
     controllerAs: 'controller'
     controller: ($scope, TextInputActions, TextInputStore) ->
         TextInputStore.$listen($scope, (event, id) ->
-            $scope.value = TextInputStore._value # (4)
+            $scope.value = TextInputStore.getValue() # (4)
         )
 
         $scope.setValue = (value) ->
