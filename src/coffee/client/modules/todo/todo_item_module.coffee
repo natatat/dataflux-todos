@@ -28,23 +28,28 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
         init: ->
             @_items = []
 
+        getAll: ->
+
         onAddItem: -> # (2)
-            @_todo = new ReadOnlyView({
+            todo = new ReadOnlyView({
                 id: _.uniqueId 'todo-'
-                description: TextInputStore._value
+                description: TextInputStore.getValue()
                 done: false
             }, ['id', 'description', 'done'])
-            @_items.unshift(@_todo)
+            @_items.unshift(todo)
 
-            @_todo.setAction('done', TodoItemActions.doItem) # (3)
+            todo.setAction('done', TodoItemActions.doItem) # (3)
 
-            @trigger(EVENT.ADD, @_todo.id) # (4)
+            @trigger(EVENT.ADD, todo.id) # (4)
             @trigger(EVENT.CHANGE) # (4)
 
         onRemoveItem: (id) ->
-            @_items = _.filter @_items, (item) -> item.id isnt id
+            for item, index in @_items
+                continue unless item.id is id
+                @_items.splice index, 1
+                break
 
-            @trigger(EVENT.REMOVE, @_todo.id)
+            @trigger(EVENT.REMOVE, id)
             @trigger(EVENT.CHANGE)
 
         onDoItem: (todo, field, value, commit) ->
