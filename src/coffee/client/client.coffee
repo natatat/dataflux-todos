@@ -9,6 +9,7 @@ if typeof(global) is 'undefined'
 
 # Load JSData libraries. The core library must be first.
 require 'js-data'
+# Ensures that the JSData adapter is registered properly
 window.DSLocalStorageAdapter = require 'js-data-localstorage'
 require 'js-data-angular'
 
