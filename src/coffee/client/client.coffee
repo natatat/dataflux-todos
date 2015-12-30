@@ -19,7 +19,7 @@ require './modules/reflux'
 # Add 'require' statements for your other Angular module files here.
 require './modules/client_schema'
 require './modules/todo/todo_item_module'
-require './modules/todo/todo_list_module'
+require './modules/todo/todo_list_directive'
 require './modules/todo/input_module'
 require './../read_only_view'
 

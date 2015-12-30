@@ -12,7 +12,7 @@ _         = require '../../../underscore'
 
 ### ex: TodoItem flow
 1. User clicks the submit button, `$scope.addTodoItem()` fires TodoItems's addTodoItem action
-2. `onAddItem()` runs and creates a new ReadOnlyView TodoItem, pushes it into @_items
+2. `onAddItem()` runs and creates a new ReadOnlyView TodoItem, pushes it into @_todos
     (3. Register doItem action to run when the 'done' field of the ReadOnlyView is changed)
 4. TodoItemStore sends a notification that something has been added and changed
 
@@ -26,9 +26,10 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
         listenables: TodoItemActions
 
         init: ->
-            @_items = []
+            @_todos = []
 
         getAll: ->
+            return @_todos
 
         onAddItem: -> # (2)
             todo = new ReadOnlyView({
@@ -36,7 +37,7 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
                 description: TextInputStore.getValue()
                 done: false
             }, ['id', 'description', 'done'])
-            @_items.unshift(todo)
+            @_todos.unshift(todo)
 
             todo.setAction('done', TodoItemActions.doItem) # (3)
 
@@ -44,9 +45,9 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
             @trigger(EVENT.CHANGE) # (4)
 
         onRemoveItem: (id) ->
-            for item, index in @_items
+            for item, index in @_todos
                 continue unless item.id is id
-                @_items.splice index, 1
+                @_todos.splice index, 1
                 break
 
             @trigger(EVENT.REMOVE, id)
