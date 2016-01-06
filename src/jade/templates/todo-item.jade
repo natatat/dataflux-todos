@@ -1,0 +1,8 @@
+//-
+//- Copyright (C) 2015 by Looker Data Services, Inc.
+//- All rights reserved.
+//-
+
+input(type="checkbox" ng-click="toggleDone()")
+span(ng-class="{'done': todo.done}") {{todo.description}}
+a(href="#" ng-click="removeTodoItem()") remove

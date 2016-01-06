@@ -4,4 +4,12 @@
 #
 
 module.exports =
-    FOO: 'bar'
+    EVENT:
+        ADD:    'add'
+        CANCEL: 'cancel'
+        CHANGE: 'change'
+        DONE:   'done'
+        ERROR:  'error'
+        INVALID: 'invalid'
+        REMOVE: 'remove'
+        SAVE:   'save'
