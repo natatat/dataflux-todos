@@ -43,7 +43,7 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
             }, ['id', 'description', 'done'])
             @_todos.unshift(todo)
 
-            todo.setAction('done', TodoItemActions.doItem) # (3)
+            todo.setAction('done', TodoItemActions.setDone) # (3)
 
             @trigger(EVENT.ADD, todo.id) # (4)
             @trigger(EVENT.CHANGE) # (4)
@@ -57,15 +57,13 @@ todo.factory 'TodoItemStore', (ReadOnlyView, reflux, TextInputStore, Todo, TodoI
             @trigger(EVENT.REMOVE, id)
             @trigger(EVENT.CHANGE)
 
-        onDoItem: (todo, field, value, commit) ->
-            # commit(value)
-            # todo._actions.done(!todo.done)
-
+        onSetDone: (todo, field, value, commit) ->
+            commit(value)
             @trigger(EVENT.CHANGE)
 
 
 todo.factory 'TodoItemActions', (reflux) ->
-    reflux.createActions ['addItem', 'doItem', 'removeItem']
+    reflux.createActions ['addItem', 'setDone', 'removeItem']
 
 
 todo.directive 'todoItem', () ->
@@ -76,18 +74,16 @@ todo.directive 'todoItem', () ->
     controllerAs: 'controller'
     controller: ($scope, TodoItemStore, TodoItemActions) ->
         TodoItemStore.$listen($scope, (event, id) ->
-            todo = TodoItemStore.get($scope.id)
-            return unless todo
-            $scope.description = todo.description
-            $scope.done = todo.done
+            $scope.todo = TodoItemStore.get($scope.id)
+            return unless $scope.todo
         )
 
         # Controller fires removeItem/doItem actions based on user events
         $scope.removeTodoItem = ->
             TodoItemActions.removeItem($scope.id)
 
-        $scope.makeDone = -> # TODO
-            TodoItemActions.doItem()
+        $scope.toggleDone = ->
+            $scope.todo.done = !$scope.todo.done
 
 
 todo.directive 'todoForm', () ->
